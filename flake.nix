@@ -22,7 +22,6 @@
             nixpkgs.overlays =
               [
                 overlay-unstable
-                overlay-gaming
               ];
           }
         )
@@ -34,19 +33,13 @@
           config.nvidia.acceptLicense = true;
         };
       };
-      overlay-gaming = final: prev: {
-        gaming = import nix-gaming {
-          inherit system;
-          config.allowUnfree = true;
-          config.nvidia.acceptLicense = true;
-        };
-      };
     in {
       nixosConfigurations = {
         # Hostname matches networking.hostName in configuration.nix
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = genericModules; #No more list, we defined the list above... WHY DOES THIS WORK?!
+          specialArgs = { inherit nix-gaming; };
         };
       };
     };

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, nix-gaming, ... }:
 
 
 {
@@ -15,7 +15,7 @@
   pkgs.btop
   pkgs.nixfmt-rfc-style
   pkgs.git
-  pkgs.gaming.packages.${pkgs.system}.star-citizen
+  nix-gaming.packages.${pkgs.system}.star-citizen
   ];
 
   programs._1password.enable = true;
