@@ -6,9 +6,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nix-gaming.url = "github:fufexan/nix-gaming";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, nix-gaming, ... }@inputs:
     let
       system = "x86_64-linux"; # Matches hardware-configuration.nix
       #We stole this from someone's Git (Krutonium) - it sets up modules and adds an unstable overlay (AFAIK...) which we can then use in the "in" block
@@ -21,12 +22,20 @@
             nixpkgs.overlays =
               [
                 overlay-unstable
+                overlay-gaming
               ];
           }
         )
       ];
       overlay-unstable = final: prev: {
         unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+          config.nvidia.acceptLicense = true;
+        };
+      };
+      overlay-gaming = final: prev: {
+        gaming = import nix-gaming {
           inherit system;
           config.allowUnfree = true;
           config.nvidia.acceptLicense = true;

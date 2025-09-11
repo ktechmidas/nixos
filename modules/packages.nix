@@ -9,13 +9,13 @@
   pkgs.nh
   pkgs.chromium
   pkgs.unstable.codex
-  pkgs.boxbuddy
   pkgs.fastfetch
   pkgs.distrobox
   pkgs.filen-desktop
   pkgs.btop
   pkgs.nixfmt-rfc-style
   pkgs.git
+  pkgs.gaming.packages.${pkgs.system}.star-citizen
   ];
 
   programs._1password.enable = true;
