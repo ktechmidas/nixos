@@ -9,11 +9,13 @@
   pkgs.nh
   pkgs.chromium
   pkgs.unstable.codex
+  pkgs.boxbuddy
   pkgs.fastfetch
   pkgs.distrobox
   pkgs.filen-desktop
   pkgs.btop
   pkgs.nixfmt-rfc-style
+  pkgs.git
   ];
 
   programs._1password.enable = true;

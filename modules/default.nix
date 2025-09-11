@@ -8,5 +8,6 @@
     ./sound.nix
     ./users.nix
     ./podman.nix
+    ./filesystem.nix
   ];
 }
