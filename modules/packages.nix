@@ -9,6 +9,7 @@
   pkgs.nh
   pkgs.chromium
   pkgs.unstable.codex
+  pkgs.unstable.claude-code
   pkgs.fastfetch
   pkgs.distrobox
   pkgs.filen-desktop
@@ -22,6 +23,9 @@
   pkgs.unzip
   pkgs.gamescope
   pkgs.sqlitestudio
+  pkgs.xclip
+  pkgs.pciutils
+  pkgs.cachix
   ];
 
   programs._1password.enable = true;
@@ -50,5 +54,17 @@ programs.steam = {
 
   programs.firefox.enable = true;
 
-  fonts.fonts = with pkgs; [noto-fonts noto-fonts-extra];
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.noto
+    nerd-fonts.hack
+    nerd-fonts.ubuntu
+    #nerd-fonts.mplus
+    nerd-fonts.symbols-only
+    fira
+    noto-fonts
+    noto-fonts-extra
+  ];
+
 }

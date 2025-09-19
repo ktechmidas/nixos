@@ -7,9 +7,18 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland-config = {
+      url = "github:ktechmidas/nixos-cachy-hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, nix-gaming, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixos-hardware, nix-gaming, home-manager, hyprland-config, ... }@inputs:
     let
       system = "x86_64-linux"; # Matches hardware-configuration.nix
       #We stole this from someone's Git (Krutonium) - it sets up modules and adds an unstable overlay (AFAIK...) which we can then use in the "in" block
@@ -25,6 +34,8 @@
               ];
           }
         )
+        home-manager.nixosModules.home-manager
+        hyprland-config.nixosModules.default
       ];
       overlay-unstable = final: prev: {
         unstable = import nixpkgs-unstable {
@@ -44,4 +55,3 @@
       };
     };
 }
-

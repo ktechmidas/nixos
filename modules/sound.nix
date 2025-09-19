@@ -34,28 +34,51 @@ in
       wireplumber = {
         enable = true;
         # Hide/disable the NVIDIA GA104 HDA card from PipeWire/ALSA when enabled
-        configPackages = lib.mkIf cfg.disableNvidiaHda [
-          (pkgs.writeTextDir "share/wireplumber/main.lua.d/51-disable-nvidia-hda.lua" ''
-            -- Disable NVIDIA/GA104 HDA device so it doesn't get exposed
-            -- Match any ALSA card whose description mentions NVIDIA/GA104/HDA Controller
-            local rule = {
-              matches = {
-                { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*NVIDIA*" } },
-                { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*GA104*" } },
-                { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*High Definition Audio Controller*" } },
-              },
-              apply_properties = {
-                ["device.disabled"] = true,
+        configPackages =
+          (lib.optionals cfg.disableNvidiaHda [
+            (pkgs.writeTextDir "share/wireplumber/main.lua.d/51-disable-nvidia-hda.lua" ''
+              -- Disable NVIDIA/GA104 HDA device so it doesn't get exposed
+              -- Match any ALSA card whose description mentions NVIDIA/GA104/HDA Controller
+              local rule = {
+                matches = {
+                  { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*NVIDIA*" } },
+                  { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*GA104*" } },
+                  { { "device.name", "matches", "alsa_card.*" }, { "device.description", "matches", "*High Definition Audio Controller*" } },
+                },
+                apply_properties = {
+                  ["device.disabled"] = true,
+                }
               }
-            }
 
-            if alsa_monitor and alsa_monitor.rules then
-              table.insert(alsa_monitor.rules, rule)
-            end
-          '')
-        ];
+              if alsa_monitor and alsa_monitor.rules then
+                table.insert(alsa_monitor.rules, rule)
+              end
+            '')
+          ])
+          ++ [
+            (pkgs.writeTextDir "share/wireplumber/main.lua.d/52-force-analog-duplex.lua" ''
+              -- Force ALSA cards to use Analog Stereo Duplex instead of Pro Audio
+              -- This makes desktop audio work immediately on login.
+              -- If the profile is unavailable on a device, WirePlumber will ignore it.
+              local rule = {
+                matches = {
+                  { { "device.name", "matches", "alsa_card.*" } },
+                },
+                apply_properties = {
+                  -- Ensure ACP (alsa-card-profile) is used and do not auto-pick profiles
+                  ["api.alsa.use-acp"] = true,
+                  ["api.acp.auto-profile"] = false,
+                  -- Internal profile id for "Analog Stereo Duplex"
+                  ["device.profile"] = "output:analog-stereo+input:analog-stereo",
+                }
+              }
+
+              if alsa_monitor and alsa_monitor.rules then
+                table.insert(alsa_monitor.rules, rule)
+              end
+            '')
+          ];
       };
     };
-    hardware.pulseaudio.enable = false;
   };
 }
