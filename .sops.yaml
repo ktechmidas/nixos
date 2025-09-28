@@ -1,0 +1,8 @@
+keys:
+  - &monotoko age1pc0y58zm48c8syl7y05vxths67ws0mejp7wehlv4qkjwkpl4zsss9waggt
+
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+      - age:
+          - *monotoko

@@ -8,6 +8,8 @@
     ./sound.nix
     ./users.nix
     ./podman.nix
-    ./filesystem.nix
+    ./impermanence.nix
+    ./sops.nix
+    ./home-manager.nix
   ];
 }

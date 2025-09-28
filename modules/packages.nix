@@ -16,7 +16,7 @@
   pkgs.btop
   pkgs.nixfmt-rfc-style
   pkgs.git
-  nix-gaming.packages.${pkgs.system}.star-citizen
+#  nix-gaming.packages.${pkgs.system}.star-citizen
   pkgs.pinta
   pkgs.sshfs
   pkgs.zip
@@ -26,6 +26,8 @@
   pkgs.xclip
   pkgs.pciutils
   pkgs.cachix
+  pkgs.sops
+  pkgs.age
   ];
 
   programs._1password.enable = true;
