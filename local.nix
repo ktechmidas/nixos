@@ -4,6 +4,8 @@
   # Flip this to false if you want the NVIDIA/GA104 HDA device visible.
   monotoko.sound.disableNvidiaHda = true;
 
+  desktop.type = "cosmic";
+
 #  modules.hyprland-desktop = {
 #    enable = true;
 #    user = "monotoko";
