@@ -28,6 +28,12 @@
   pkgs.cachix
   pkgs.sops
   pkgs.age
+  nix-gaming.packages.${pkgs.system}.wine-ge
+  pkgs.dnsutils
+  pkgs.mailspring
+  pkgs.libinput
+  pkgs.jq
+  pkgs.neovim
   ];
 
   programs._1password.enable = true;

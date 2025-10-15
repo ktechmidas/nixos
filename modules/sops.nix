@@ -3,7 +3,7 @@
 {
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
-    age.keyFile = "/home/monotoko/.config/sops/age/keys.txt";
+    age.keyFile = "/persist/home/monotoko/.config/sops/age/keys.txt";
 
     secrets = {
       github_ssh_key = {

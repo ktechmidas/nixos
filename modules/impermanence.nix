@@ -27,6 +27,13 @@
     depends = [ "/persist" ];
   };
 
+  fileSystems."/persist/mnt" = {
+    device = "/dev/disk/by-uuid/ee165490-6d8f-41df-8715-cdbc7f9d094e";
+    fsType = "btrfs";
+    options = [ "defaults" ];
+    neededForBoot = false;
+  };
+
   environment.persistence."/persist" = {
     hideMounts = true;
     directories = [

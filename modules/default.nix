@@ -11,5 +11,6 @@
     ./impermanence.nix
     ./sops.nix
     ./home-manager.nix
+    ./keyboard-fix.nix
   ];
 }

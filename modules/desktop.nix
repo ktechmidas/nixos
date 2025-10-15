@@ -2,40 +2,30 @@
 
 {
   options.desktop.type = lib.mkOption {
-    type = lib.types.enum [ "cosmic" "none" ];
+    type = lib.types.enum [ "cosmic" "gnome" "xfce" "none" ];
     default = "none";
     description = "Desktop environment to use";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf (config.desktop.type == "cosmic") {
+    (lib.mkIf (config.desktop.type != "none") {
       services.xserver.enable = true;
+    })
+
+    (lib.mkIf (config.desktop.type == "cosmic") {
       services.displayManager.cosmic-greeter.enable = true;
       services.desktopManager.cosmic.enable = true;
       services.desktopManager.cosmic.xwayland.enable = true;
-
-      services.xserver.xkb = {
-        layout = "us";
-        variant = "";
-      };
     })
 
-    {
-      systemd.services.keyboard-backlight = {
-        description = "Enable USB keyboard RGB backlight";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "systemd-udev-settle.service" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "enable-keyboard-backlight" ''
-            DEVICE_PATH=$(find /sys/devices -path "*2A7A:9597*/input/input*::scrolllock/brightness" 2>/dev/null | head -1)
-            if [ -n "$DEVICE_PATH" ]; then
-              echo 1 > "$DEVICE_PATH"
-            fi
-          '';
-          RemainAfterExit = true;
-        };
-      };
-    }
+    (lib.mkIf (config.desktop.type == "gnome") {
+      services.xserver.displayManager.gdm.enable = true;
+      services.xserver.desktopManager.gnome.enable = true;
+    })
+
+    (lib.mkIf (config.desktop.type == "xfce") {
+      services.xserver.displayManager.lightdm.enable = true;
+      services.xserver.desktopManager.xfce.enable = true;
+    })
   ];
 }
